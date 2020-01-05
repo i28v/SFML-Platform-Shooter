@@ -3,6 +3,7 @@
 #include "data.h"
 #include "settings.h"
 #include "Player.h"
+#include "Bullet.h"
 
 class Game
 {
@@ -17,6 +18,9 @@ class Game
     Event* event;
     RectangleShape* grass;
     Player* player;
+    Bullet* bullet;
+    unsigned int numBulletsBeingFired;
+    bool fireBulletMessage;
     void init();
     void events(RenderWindow& twindow, Event& tevent);
     void input();
