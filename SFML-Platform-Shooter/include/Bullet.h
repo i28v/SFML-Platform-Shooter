@@ -9,6 +9,7 @@ class Bullet
 {
     public:
         Bullet(Vector2f size, Vector2f position);
+        Bullet();
         virtual ~Bullet();
         void drawTo(RenderWindow& twindow);
         void move(Vector2f direction);

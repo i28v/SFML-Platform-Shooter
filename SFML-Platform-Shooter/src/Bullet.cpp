@@ -12,10 +12,15 @@ Bullet::Bullet(Vector2f size, Vector2f position)
     this->gunshot.setBuffer(this->bgunshot);
 }
 
+Bullet::Bullet()
+{
+
+}
+
 Bullet::~Bullet()
 {
-    delete[] this->bTexture;
-    delete[] this->bSprite;
+    delete this->bTexture;
+    delete this->bSprite;
 }
 
 void Bullet::drawTo(RenderWindow& twindow)

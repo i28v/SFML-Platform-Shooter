@@ -12,8 +12,8 @@ Player::Player(Vector2f size, Vector2f position)
 
 Player::~Player()
 {
-    delete[] this->pTexture;
-    delete[] this->pSprite;
+    delete this->pTexture;
+    delete this->pSprite;
 }
 
 void Player::drawTo(RenderWindow& twindow)

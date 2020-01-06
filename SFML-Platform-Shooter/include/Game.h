@@ -18,7 +18,7 @@ class Game
     Event* event;
     RectangleShape* grass;
     Player* player;
-    Bullet* bullet;
+    std::vector<Bullet*> bullet;
     unsigned int numBulletsBeingFired;
     bool fireBulletMessage;
     void init();
