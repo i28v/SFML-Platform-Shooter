@@ -18,6 +18,10 @@ class Game
     Event* event;
     RectangleShape* grass;
     Player* player;
+    Clock fireBulletClock;
+    Clock removeBulletsFromMemoryClock;
+    Time fireTime;
+    Time removeBulletsFromMemoryTime;
     std::vector<Bullet*> bullet;
     unsigned int numBulletsBeingFired;
     bool fireBulletMessage;

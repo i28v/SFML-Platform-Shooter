@@ -1,6 +1,6 @@
 #ifndef BULLET_H
 #define BULLET_H
-#include "../data.h"
+#include "../include/data.h"
 #include "bulletdata.hpp"
 #include "gunshot.hpp"
 #include <SFML/Audio.hpp>
