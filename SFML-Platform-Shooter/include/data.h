@@ -5,7 +5,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
-#if defined(__WIN32)
+#if defined(_WIN32)
 #if defined(_MSC_VER)
 #include <Windows.h>
 #else
@@ -16,6 +16,7 @@
 #define Sleep(m) usleep(m * 1000)
 #endif
 #define kb Keyboard
+
 using namespace sf;
 
 enum Direction

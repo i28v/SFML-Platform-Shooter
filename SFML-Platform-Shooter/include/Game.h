@@ -19,11 +19,11 @@ class Game
     RectangleShape* grass;
     Player* player;
     Clock fireBulletClock;
-    Clock removeBulletsFromMemoryClock;
+    Clock spacebarClock;
+    Time spacebarTime;
     Time fireTime;
-    Time removeBulletsFromMemoryTime;
     std::vector<Bullet*> bullet;
-    unsigned int numBulletsBeingFired;
+    unsigned int numberOfBulletsBeingFired;
     bool fireBulletMessage;
     void init();
     void events(RenderWindow& twindow, Event& tevent);

@@ -17,7 +17,7 @@ void Game::init()
     this->player = new Player({3.0f,3.0f}, {30.0f, 420.0f});
     this->fireBulletMessage = false;
     this->fireBulletClock.restart();
-    this->removeBulletsFromMemoryClock.restart();
+    this->spacebarClock.restart();
 }
 
 Game::~Game()
@@ -26,7 +26,10 @@ Game::~Game()
     delete this->event;
     delete this->grass;
     delete this->player;
-
+    for(int i = 0; i < bullet.size(); i++)
+    {
+        delete this->bullet[i];
+    }
 }
 
 void Game::events(RenderWindow& twindow, Event& tevent)
@@ -44,18 +47,25 @@ void Game::events(RenderWindow& twindow, Event& tevent)
 
 void Game::input()
 {
+    this->spacebarTime = spacebarClock.getElapsedTime();
     if(kb::isKeyPressed(kb::Up))    this->player->setDirection(Direction::Up);
     if(kb::isKeyPressed(kb::Down))  this->player->setDirection(Direction::Down);
     if(kb::isKeyPressed(kb::Left))  this->player->setDirection(Direction::Left);
     if(kb::isKeyPressed(kb::Right)) this->player->setDirection(Direction::Right);
-    if(kb::isKeyPressed(kb::Space)) this->fireBulletMessage = true;
-    else if(!kb::isKeyPressed(kb::Up) && !kb::isKeyPressed(kb::Down) && !kb::isKeyPressed(kb::Left) && !kb::isKeyPressed(kb::Right)) this->player->setDirection(Direction::Still);
+    if(sf::Keyboard::isKeyPressed(kb::Space) && this->spacebarTime.asMilliseconds() > 70)
+    {
+        this->fireBulletMessage = true;
+        this->spacebarClock.restart();
+    }
+    else if(!kb::isKeyPressed(kb::Up) && !kb::isKeyPressed(kb::Down) && !kb::isKeyPressed(kb::Left) && !kb::isKeyPressed(kb::Right))
+    {
+        this->player->setDirection(Direction::Still);
+    }
 }
 
 void Game::update()
 {
     this->fireTime = this->fireBulletClock.getElapsedTime();
-    this->removeBulletsFromMemoryTime = this->removeBulletsFromMemoryClock.getElapsedTime();
     switch(this->player->getDirection())
     {
     case Direction::Up:
@@ -79,22 +89,16 @@ void Game::update()
     default:
         break;
     }
-    if(this->removeBulletsFromMemoryTime.asSeconds() >= 10)
-    {
-        this->removeBulletsFromMemoryClock.restart();
-    }
     if(this->fireBulletMessage == true)
     {
-        std::cout << "fired" << std::endl;
-
-        if(fireTime.asMilliseconds() > 100)
+        if(fireTime.asMilliseconds() > 300)
         {
             this->fireBulletClock.restart();
             this->fireBulletMessage = false;
             this->bullet.push_back(new Bullet({1.0f, 1.0f}, {this->player->getPositionX() + 10, this->player->getPositionY() + 15}));
-            this->bullet[this->numBulletsBeingFired]->playGunshot();
-            this->bullet[this->numBulletsBeingFired]->isBeingFired = true;
-            this->numBulletsBeingFired += 1;
+            this->bullet[this->numberOfBulletsBeingFired]->playGunshot();
+            this->bullet[this->numberOfBulletsBeingFired]->isBeingFired = true;
+            this->numberOfBulletsBeingFired += 1;
 
         }
     }
@@ -106,6 +110,9 @@ void Game::update()
             if(this->bullet[i]->getPositionX() >= 800 && this->bullet.size() != 0)
             {
                 this->bullet[i]->isBeingFired = false;
+                this->numberOfBulletsBeingFired -= 1;
+                this->bullet.erase(this->bullet.begin());
+                std::cout << this->bullet.size() << std::endl;
             }
         }
     }
@@ -115,9 +122,9 @@ void Game::draw(RenderWindow& twindow)
 {
     twindow.clear(Color::Cyan);
     twindow.draw(*this->grass);
-    if(this->numBulletsBeingFired >= 0)
+    if(this->numberOfBulletsBeingFired >= 0)
     {
-        for(int i = 0; i < bullet.size(); i++)
+        for(int i = 0; i < this->numberOfBulletsBeingFired; i++)
         {
 
             this->bullet[i]->drawTo(twindow);
